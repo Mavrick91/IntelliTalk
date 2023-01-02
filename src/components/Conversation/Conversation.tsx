@@ -5,7 +5,6 @@ import ConversationItem from "../ConversationItem";
 
 const Conversation = () => {
   const [historic] = useHistoric();
-  console.log("🚀 ~ historic", historic);
   const ref = useRef<ScrollView>();
 
   useEffect(() => {

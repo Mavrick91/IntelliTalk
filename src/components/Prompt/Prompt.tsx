@@ -3,7 +3,7 @@ import { IconButton } from "@react-native-material/core";
 import { useCallback, useState } from "react";
 import { KeyboardAvoidingView, Platform, TextInput, View } from "react-native";
 import uuid from "react-native-uuid";
-import { concatHistoricPrompt } from "../../../utils";
+import { concatHistoricPrompt, getFormattedErrorMessage } from "../../../utils";
 import { useHistoric } from "../../context/HistoricProvider";
 import useCreateCompletion from "../../hooks/useCreateCompletion";
 
@@ -30,8 +30,13 @@ const Prompt = () => {
         });
       })
       .catch((error) => {
-        // setHistoric({ me: false, text: inputValue.trim(), id: uuid.v4() });
-        console.log("🚀 ~ error", error.response);
+        removeLastMessage();
+        setHistoric({
+          me: false,
+          text: getFormattedErrorMessage(error.response.data.error.code),
+          id: uuid.v4(),
+          error: true,
+        });
       });
   }, [inputValue]);
 

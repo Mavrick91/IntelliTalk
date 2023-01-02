@@ -1,12 +1,8 @@
 import React from "react";
 import { Text, View, StyleSheet, Image } from "react-native";
+import { Historic } from "../../types/historic";
 
-type Props = {
-  me: boolean;
-  text: string;
-};
-
-const ConversationItem = ({ me, text }: Props) => {
+const ConversationItem = ({ me, text, error }: Omit<Historic, "id">) => {
   return (
     <View style={[styles.container, me ? styles.me : styles.notMe]}>
       <Image
@@ -17,7 +13,7 @@ const ConversationItem = ({ me, text }: Props) => {
             : require("../../assets/user-ai.png")
         }
       />
-      <Text style={styles.text}>{text}</Text>
+      <Text style={[styles.text, error ? styles.error : null]}>{text}</Text>
     </View>
   );
 };
@@ -43,6 +39,9 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 16,
     flex: 1,
+  },
+  error: {
+    color: "#f4212e",
   },
 });
 

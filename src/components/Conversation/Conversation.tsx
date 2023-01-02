@@ -22,6 +22,7 @@ const Conversation = () => {
           key={item.id as string}
           me={item.me}
           text={item.text}
+          error={item.error}
         />
       ))}
     </ScrollView>

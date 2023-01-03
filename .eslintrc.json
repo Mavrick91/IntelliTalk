@@ -18,6 +18,8 @@
   "plugins": [
     "react",
     "react-native",
+    "react-hooks",
+    "simple-import-sort",
     "@typescript-eslint"
   ],
   "rules": {
@@ -26,9 +28,23 @@
       "error",
       "double"
     ],
+    "react-hooks/exhaustive-deps": "warn",
+    "react-hooks/rules-of-hooks": "error",
+    "simple-import-sort/exports": "error",
+    "simple-import-sort/imports": "error",
     "comma-dangle": [
       "error",
-      "always-multiline"
+      "only-multiline"
+    ],
+    "react/jsx-sort-props": [
+      2,
+      {
+        "callbacksLast": true,
+        "ignoreCase": true,
+        "noSortAlphabetically": false,
+        "shorthandFirst": false,
+        "shorthandLast": true
+      }
     ]
   },
   "settings": {

@@ -1,4 +1,4 @@
-import { TextInput, StyleSheet } from "react-native";
+import { StyleSheet,TextInput } from "react-native";
 
 type Props = {
   value: string;
@@ -9,9 +9,9 @@ const InputText = ({ value, onChangeText }: Props) => {
   return (
     <TextInput
       className="border text-white"
-      onChangeText={onChangeText}
-      value={value}
       style={styles.textInput}
+      value={value}
+      onChangeText={onChangeText}
     />
   );
 };

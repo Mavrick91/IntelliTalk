@@ -1,39 +1,52 @@
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import { IconButton } from "@react-native-material/core";
-import { useState } from "react";
+import { useCallback } from "react";
 import { StyleSheet, View } from "react-native";
-import { useHistoric } from "../../context/HistoricProvider";
-import ModalHistoric from "../Modals/ModalHistoric";
 
-const Header = () => {
-  const [, setHistoric] = useHistoric();
-  const [showModal, setShowModal] = useState(false);
+import { useHistoric } from "../../context/HistoricProvider";
+import { Thread } from "../../types/historic";
+
+type Props = {
+  openDrawer: () => void;
+  navigationToNewChatCreated: (thread: Thread) => void;
+  navigationToPreviousChat: (thread: Thread) => void;
+};
+
+const Header = ({
+  openDrawer,
+  navigationToNewChatCreated,
+  navigationToPreviousChat,
+}: Props) => {
+  const { createThread, deleteThread, selectedThread } = useHistoric();
+
+  const handlePressDelete = useCallback(async () => {
+    const ThreadIdToNavigate = await deleteThread(selectedThread.id);
+    if (ThreadIdToNavigate) navigationToPreviousChat(ThreadIdToNavigate);
+  }, [deleteThread, navigationToPreviousChat, selectedThread.id]);
 
   return (
-    <View>
+    <View className="z-20">
       <View
-        className="flex-row justify-end w-full bg-[#343541] z-10"
+        className="flex-row justify-end w-full bg-[#343541] z-20"
         style={styles.shadow}
       >
         <IconButton
-          onPress={() => setShowModal(true)}
           icon={(props) => (
             <Icon name="format-list-bulleted" {...props} color="#ACABBD" />
           )}
+          onPress={() => openDrawer()}
         />
         <IconButton
-          onPress={() => setHistoric()}
+          icon={(props) => (
+            <Icon name="plus-circle-outline" {...props} color="#ACABBD" />
+          )}
+          onPress={() => createThread().then(navigationToNewChatCreated)}
+        />
+        <IconButton
           icon={(props) => <Icon name="delete" {...props} color="#ACABBD" />}
+          onPress={handlePressDelete}
         />
       </View>
-      {showModal && (
-        <ModalHistoric
-          data={[]}
-          modal={{
-            onRequestClose: () => setShowModal(false),
-          }}
-        />
-      )}
     </View>
   );
 };

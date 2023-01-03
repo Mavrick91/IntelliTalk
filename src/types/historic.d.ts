@@ -1,6 +1,15 @@
-export type Historic = {
+import { ReactNode } from "react";
+
+export type MessageThread = {
   me: boolean;
-  text: string;
-  id: string | number[];
+  text: string | ReactNode;
+  id: string;
   error?: boolean;
+};
+
+export type Thread = {
+  id: string;
+  createdAt: string;
+  userColor: string;
+  messages: MessageThread[];
 };

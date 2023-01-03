@@ -1,19 +1,30 @@
 import React from "react";
-import { Text, View, StyleSheet, Image } from "react-native";
-import { Historic } from "../../types/historic";
+import { Image, StyleSheet, Text, View } from "react-native";
 
-const ConversationItem = ({ me, text, error }: Omit<Historic, "id">) => {
+import { MessageThread, Thread } from "../../types/historic";
+
+type Props = Pick<Thread, "userColor"> & Omit<MessageThread, "id">;
+
+const ConversationItem = ({ me, text, error, userColor }: Props) => {
   return (
     <View style={[styles.container, me ? styles.me : styles.notMe]}>
-      <Image
-        style={styles.image}
-        source={
-          me
-            ? require("../../assets/user.png")
-            : require("../../assets/user-ai.png")
-        }
-      />
-      <Text style={[styles.text, error ? styles.error : null]}>{text}</Text>
+      {me ? (
+        <View
+          className={"h-10 w-10 rounded mr-4 items-center justify-center"}
+          style={{ backgroundColor: userColor }}
+        >
+          <Text className="text-white text-lg">U</Text>
+        </View>
+      ) : (
+        <Image
+          className="h-10 w-10 rounded mr-4 items-center justify-center"
+          source={require("../../assets/logo.png")}
+        />
+      )}
+
+      <Text style={[styles.text, error ? styles.error : null]} selectable>
+        {text}
+      </Text>
     </View>
   );
 };
@@ -24,7 +35,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
   },
-  image: {
+  AIColor: {
     width: 48,
     height: 48,
     marginRight: 8,

@@ -1,10 +1,11 @@
 import { useEffect, useRef } from "react";
 import { ScrollView } from "react-native";
+
 import { useHistoric } from "../../context/HistoricProvider";
 import ConversationItem from "../ConversationItem";
 
 const Conversation = () => {
-  const [historic] = useHistoric();
+  const { selectedThread } = useHistoric();
   const ref = useRef<ScrollView>();
 
   useEffect(() => {
@@ -13,16 +14,17 @@ const Conversation = () => {
         ref.current?.scrollToEnd({ animated: true });
       }, 100);
     }
-  }, [historic.length]);
+  }, [selectedThread.messages.length]);
 
   return (
     <ScrollView ref={ref}>
-      {historic.map((item) => (
+      {selectedThread.messages.map((message) => (
         <ConversationItem
-          key={item.id as string}
-          me={item.me}
-          text={item.text}
-          error={item.error}
+          error={message.error}
+          key={message.id as string}
+          me={message.me}
+          text={message.text}
+          userColor={selectedThread.userColor}
         />
       ))}
     </ScrollView>
